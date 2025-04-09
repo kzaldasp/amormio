@@ -1,0 +1,161 @@
+---
+// components/CompactTimer.astro
+
+const startDate = new Date('2025-02-09T00:00:00');
+---
+
+<style>
+  .timer-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-width: 480px;
+    margin: 1rem auto;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    border: 1px solid #eee;
+  }
+
+  .timer-header {
+    flex: 0 0 100px;
+    text-align: center;
+    border-right: 2px solid #f0f0f0;
+    padding-right: 1.2rem;
+  }
+
+  .timer-title {
+    font-family: 'Segoe UI', sans-serif;
+    color: #444;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .date {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.3rem;
+  }
+
+  .timer-units {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .time-unit {
+    text-align: center;
+    position: relative;
+  }
+
+  .number {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.4rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .label {
+    font-family: 'Segoe UI', sans-serif;
+    color: #95a5a6;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.2rem;
+  }
+
+  .divider {
+    color: #ddd;
+    font-size: 1.2rem;
+    margin-top: -0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    .timer-card {
+      max-width: 90%;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    
+    .timer-header {
+      flex-basis: 80px;
+      padding-right: 0.8rem;
+    }
+    
+    .timer-units {
+      gap: 1rem;
+    }
+    
+    .number {
+      font-size: 1.2rem;
+    }
+    
+    .label {
+      font-size: 0.65rem;
+    }
+  }
+</style>
+
+<div class="timer-card">
+  <div class="timer-header">
+    <h3 class="timer-title">Tiempo transcurrido</h3>
+    <h4 class="timer-title">Desde que soy feliz</h4>
+  </div>
+  
+  <div class="timer-units">
+    <div class="time-unit">
+      <div class="number" id="compactDays">0</div>
+      <div class="label">Días</div>
+    </div>
+    <div class="divider">:</div>
+    
+    <div class="time-unit">
+      <div class="number" id="compactHours">00</div>
+      <div class="label">Horas</div>
+    </div>
+    <div class="divider">:</div>
+    
+    <div class="time-unit">
+      <div class="number" id="compactMinutes">00</div>
+      <div class="label">Minutos</div>
+    </div>
+    <div class="divider">:</div>
+    
+    <div class="time-unit">
+      <div class="number" id="compactSeconds">00</div>
+      <div class="label">Segundos</div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const start = new Date('2025-02-09T00:00:00');
+    
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - start;
+      
+      if (diff < 0) {
+        document.querySelector('.timer-title').textContent = 'Contador iniciará en:';
+        document.querySelector('.date').textContent = '09/02/2025';
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById('compactDays').textContent = days;
+      document.getElementById('compactHours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('compactMinutes').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('compactSeconds').textContent = seconds.toString().padStart(2, '0');
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  });
+</script>
